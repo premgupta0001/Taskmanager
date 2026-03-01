@@ -117,3 +117,20 @@ jobs:
         with:
           name: task-manager-universal
           path: apps/mobile/android/app/build/outputs/apk/release/task-manager-universal*.apk
+
+      - name: Create GitHub Release and Upload APKs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          COMMIT_HASH=$(echo "${{ github.sha }}" | cut -c1-7)
+          RELEASE_TAG="v$COMMIT_HASH"
+          RELEASE_DATE=$(date '+%Y-%m-%d %H:%M:%S')
+          RELEASE_NAME="Daily Task Manager - $RELEASE_DATE"
+          
+          # Create release
+          gh release create "$RELEASE_TAG" \
+            --title "$RELEASE_NAME" \
+            --notes "APKs available for installation" \
+            --draft=false \
+            --prerelease=false \
+            apps/mobile/android/app/build/outputs/apk/release/task-manager-*.apk || true
