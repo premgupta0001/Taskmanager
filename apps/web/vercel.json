@@ -1,7 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "pnpm --filter web build",
-  "installCommand": "pnpm install",
+  "buildCommand": "pnpm install --prefix=../..",
   "env": {
     "NEXT_PUBLIC_SUPABASE_URL": "https://ukymolvmmrwgfjcybafg.supabase.co",
     "NEXT_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_hEPJQRgfJgEm935dldrnFg_LwyJO_-P"
