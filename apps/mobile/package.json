@@ -13,8 +13,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@taskmanager/shared": "file:../packages/shared",
-    "@taskmanager/supabase": "file:../packages/supabase",
+    "@taskmanager/shared": "workspace:*",
+    "@taskmanager/supabase": "workspace:*",
     "expo": "~52.0.0",
     "expo-constants": "~17.0.5",
     "expo-linking": "~7.0.5",

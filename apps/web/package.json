@@ -10,8 +10,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@taskmanager/shared": "file:../packages/shared",
-    "@taskmanager/supabase": "file:../packages/supabase",
+    "@taskmanager/shared": "workspace:*",
+    "@taskmanager/supabase": "workspace:*",
     "next": "14.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
