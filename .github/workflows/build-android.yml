@@ -127,10 +127,18 @@ jobs:
           RELEASE_DATE=$(date '+%Y-%m-%d %H:%M:%S')
           RELEASE_NAME="Daily Task Manager - $RELEASE_DATE"
           
-          # Create release
+          cd apps/mobile/android/app/build/outputs/apk/release
+          
+          # Create release first
           gh release create "$RELEASE_TAG" \
             --title "$RELEASE_NAME" \
             --notes "APKs available for installation" \
             --draft=false \
-            --prerelease=false \
-            apps/mobile/android/app/build/outputs/apk/release/task-manager-*.apk || true
+            --prerelease=false || true
+          
+          # Upload all APK files to the release
+          for apk in task-manager-*.apk; do
+            if [ -f "$apk" ]; then
+              gh release upload "$RELEASE_TAG" "$apk" --clobber || true
+            fi
+          done
