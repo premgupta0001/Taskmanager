@@ -6,11 +6,11 @@
     "apps/*"
   ],
   "scripts": {
-    "dev": "npm run dev --workspace=apps/web",
-    "dev:mobile": "npm run dev --workspace=apps/mobile",
-    "build": "NODE_ENV=production npm run build --workspace=apps/web",
-    "lint": "npm run lint --workspaces",
-    "typecheck": "npm run typecheck --workspaces"
+    "dev": "pnpm --filter apps/web dev",
+    "dev:mobile": "pnpm --filter apps/mobile dev",
+    "build": "NODE_ENV=production pnpm --filter apps/web build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck"
   },
   "devDependencies": {
     "typescript": "^5.3.3"
