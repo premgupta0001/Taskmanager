@@ -1,0 +1,119 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [main]
+
+env:
+  EXPO_PUBLIC_SUPABASE_URL: https://ukymolvmmrwgfjcybafg.supabase.co
+  EXPO_PUBLIC_SUPABASE_ANON_KEY: sb_publishable_hEPJQRgfJgEm935dldrnFg_LwyJO_-P
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Generate Android project
+        run: npx expo prebuild --platform android --clean
+        working-directory: apps/mobile
+
+      - name: Decode Expo secrets
+        run: |
+          echo "EXPO_PUBLIC_SUPABASE_URL=$EXPO_PUBLIC_SUPABASE_URL" >> apps/mobile/.env
+          echo "EXPO_PUBLIC_SUPABASE_ANON_KEY=$EXPO_PUBLIC_SUPABASE_ANON_KEY" >> apps/mobile/.env
+        working-directory: .
+
+      - name: Build ARM64 Release APK
+        run: |
+          cd apps/mobile/android
+          ./gradlew assembleRelease \
+            -PreactNativeArchitectures=arm64-v8a \
+            -PbaseApkName=task-manager-arm64
+        working-directory: .
+
+      - name: Build ARMv7 Release APK
+        run: |
+          cd apps/mobile/android
+          ./gradlew assembleRelease \
+            -PreactNativeArchitectures=armeabi-v7a \
+            -PbaseApkName=task-manager-armeabi-v7a
+        working-directory: .
+
+      - name: Build x86_64 Release APK
+        run: |
+          cd apps/mobile/android
+          ./gradlew assembleRelease \
+            -PreactNativeArchitectures=x86_64 \
+            -PbaseApkName=task-manager-x86_64
+        working-directory: .
+
+      - name: Build Universal Release APK
+        run: |
+          cd apps/mobile/android
+          ./gradlew assembleRelease \
+            -PreactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64 \
+            -PbaseApkName=task-manager-universal
+        working-directory: .
+
+      - name: Rename APKs with commit hash
+        run: |
+          COMMIT_HASH=$(echo "${{ github.sha }}" | cut -c1-7)
+          
+          cd apps/mobile/android/app/build/outputs/apk/release
+          
+          # Rename each APK with commit hash
+          mv task-manager-arm64-release.apk task-manager-arm64_$COMMIT_HASH.apk 2>/dev/null || true
+          mv task-manager-armeabi-v7a-release.apk task-manager-armeabi-v7a_$COMMIT_HASH.apk 2>/dev/null || true
+          mv task-manager-x86_64-release.apk task-manager-x86_64_$COMMIT_HASH.apk 2>/dev/null || true
+          mv task-manager-universal-release.apk task-manager-universal_$COMMIT_HASH.apk 2>/dev/null || true
+          
+          # Fallback: rename generic app-release.apk if specific ones don't exist
+          if [ -f "app-release.apk" ]; then
+            cp app-release.apk task-manager-universal_$COMMIT_HASH.apk
+          fi
+          
+          # List all APKs
+          ls -la
+
+      - name: Upload ARM64 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: task-manager-arm64
+          path: apps/mobile/android/app/build/outputs/apk/release/task-manager-arm64*.apk
+
+      - name: Upload ARMv7 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: task-manager-armeabi-v7a
+          path: apps/mobile/android/app/build/outputs/apk/release/task-manager-armeabi-v7a*.apk
+
+      - name: Upload x86_64 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: task-manager-x86_64
+          path: apps/mobile/android/app/build/outputs/apk/release/task-manager-x86_64*.apk
+
+      - name: Upload Universal APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: task-manager-universal
+          path: apps/mobile/android/app/build/outputs/apk/release/task-manager-universal*.apk
