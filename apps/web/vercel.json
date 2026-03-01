@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "cd .. && pnpm install && pnpm run build --filter=apps/web",
+  "buildCommand": "pnpm run build",
   "installCommand": "cd .. && pnpm install",
   "env": {
     "NEXT_PUBLIC_SUPABASE_URL": "https://ukymolvmmrwgfjcybafg.supabase.co",
