@@ -24,10 +24,6 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Install Expo dependencies
-        run: npx expo install
-        working-directory: apps/mobile
-
       - name: Install Ruby
         uses: ruby/setup-ruby@v1
         with:
