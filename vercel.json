@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "rootDirectory": "apps/web",
   "buildCommand": "npm run build --prefix=apps/web",
   "installCommand": "npm install --legacy-peer-deps",
   "env": {
     "NEXT_PUBLIC_SUPABASE_URL": "https://ukymolvmmrwgfjcybafg.supabase.co",
     "NEXT_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_hEPJQRgfJgEm935dldrnFg_LwyJO_-P"
-  }
+  },
+  "monorepo": true
 }
