@@ -10,6 +10,10 @@ Cross-platform task management application with smart task prioritization.
 - **Smart Organization** - Tasks automatically sorted by priority + age algorithm
 - **Cross-Platform** - Web (Next.js) and Mobile (React Native/Expo)
 
+## 🚀 Live Demo
+
+**Web App**: https://taskmanager-premgupta.vercel.app/
+
 ## Tech Stack
 
 | Layer | Technology |
@@ -26,19 +30,19 @@ Cross-platform task management application with smart task prioritization.
 ### Prerequisites
 
 - Node.js 18+
-- npm or pnpm
+- pnpm (or npm)
 
 ### Installation
 
 ```bash
-# Install all dependencies
-npm install
+# Install all dependencies with pnpm
+pnpm install
 ```
 
 ### Run Web App
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 Open http://localhost:3000
@@ -46,7 +50,7 @@ Open http://localhost:3000
 ### Run Mobile App
 
 ```bash
-npm run dev:mobile
+pnpm dev:mobile
 ```
 
 Press `w` to run in browser, or `a` for Android emulator.
@@ -127,7 +131,7 @@ Pushes to the `main` branch automatically trigger GitHub Actions to build APKs.
 | `task-manager-x86_64_<hash>.apk` | 64-bit x86 |
 | `task-manager-universal_<hash>.apk` | All architectures |
 
-Download from GitHub Actions artifacts.
+Download from [GitHub Releases](https://github.com/premgupta0001/Taskmanager/releases).
 
 ## License
 
