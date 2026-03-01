@@ -1,4 +1,6 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+// Try to use real Supabase, fall back to mock if unavailable
+let supabase: any;
+let usesMock = false;
 
 const getEnvVar = (key: string): string => {
   if (typeof process !== 'undefined' && process.env) {
@@ -13,20 +15,25 @@ const getEnvVar = (key: string): string => {
 const supabaseUrl = getEnvVar('NEXT_PUBLIC_SUPABASE_URL') || 'https://ukymolvmmrwgfjcybafg.supabase.co';
 const supabaseAnonKey = getEnvVar('NEXT_PUBLIC_SUPABASE_ANON_KEY') || 'sb_publishable_hEPJQRgfJgEm935dldrnFg_LwyJO_-P';
 
-export const createSupabaseClient = (): SupabaseClient => {
-  if (!supabaseUrl || !supabaseAnonKey) {
-    console.warn('Supabase URL or Anon Key is missing');
-  }
-  return createClient(supabaseUrl, supabaseAnonKey, {
+// Try to initialize real Supabase
+try {
+  const { createClient } = require('@supabase/supabase-js');
+  supabase = createClient(supabaseUrl, supabaseAnonKey, {
     auth: {
       persistSession: true,
       autoRefreshToken: true,
       flowType: 'pkce',
     },
   });
-};
+  console.log('Using real Supabase client');
+} catch (err) {
+  console.warn('Supabase unavailable, using mock client for local development');
+  const mockModule = require('./supabase-mock');
+  supabase = mockModule.supabase;
+  usesMock = true;
+}
 
-export const supabase = createSupabaseClient();
+export { supabase };
 
 export type User = {
   id: string;
