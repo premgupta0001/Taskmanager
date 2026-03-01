@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { tasks, Task } from '@taskmanager/supabase';
+import { tasks, Task } from '../lib/supabase';
 
 interface TaskListProps {
   refreshTrigger: number;

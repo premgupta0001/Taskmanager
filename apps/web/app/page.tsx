@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '../components/AuthProvider';
 import TaskForm from '../components/TaskForm';
 import TaskList from '../components/TaskList';
-import { Task } from '@taskmanager/supabase';
+import { Task } from '../lib/supabase';
 
 export default function Home() {
   const { user, loading: authLoading, signOut } = useAuth();

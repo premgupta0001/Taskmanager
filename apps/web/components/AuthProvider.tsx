@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { supabase, auth, User } from '@taskmanager/supabase';
+import { supabase, auth, User } from '../lib/supabase';
 
 interface AuthContextType {
   user: User | null;

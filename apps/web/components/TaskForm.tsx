@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { tasks, TaskPriority } from '@taskmanager/supabase';
+import { tasks, TaskPriority } from '../lib/supabase';
 
 interface TaskFormProps {
   onTaskAdded: () => void;
