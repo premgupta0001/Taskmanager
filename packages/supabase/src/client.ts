@@ -1,16 +1,27 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.EXPO_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
+const getEnvVar = (key: string): string => {
+  if (typeof process !== 'undefined' && process.env) {
+    return process.env[key] || '';
+  }
+  if (typeof window !== 'undefined' && (window as unknown as { ENV?: Record<string, string> }).ENV) {
+    return (window as unknown as { ENV: Record<string, string> }).ENV[key] || '';
+  }
+  return '';
+};
+
+const supabaseUrl = getEnvVar('NEXT_PUBLIC_SUPABASE_URL') || getEnvVar('EXPO_PUBLIC_SUPABASE_URL') || 'https://ukymolvmmrwgfjcybafg.supabase.co';
+const supabaseAnonKey = getEnvVar('NEXT_PUBLIC_SUPABASE_ANON_KEY') || getEnvVar('EXPO_PUBLIC_SUPABASE_ANON_KEY') || 'sb_publishable_hEPJQRgfJgEm935dldrnFg_LwyJO_-P';
 
 export const createSupabaseClient = (): SupabaseClient => {
   if (!supabaseUrl || !supabaseAnonKey) {
-    console.warn('Supabase URL or Anon Key is missing. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY (web) or EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY (mobile)');
+    console.warn('Supabase URL or Anon Key is missing');
   }
   return createClient(supabaseUrl, supabaseAnonKey, {
     auth: {
       persistSession: true,
       autoRefreshToken: true,
+      flowType: 'pkce',
     },
   });
 };
