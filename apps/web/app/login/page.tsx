@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '../components/AuthProvider';
+import { useAuth } from '../../components/AuthProvider';
 
 export default function LoginPage() {
   const [isSignUp, setIsSignUp] = useState(false);
