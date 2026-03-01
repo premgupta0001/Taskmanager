@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "react-native",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@taskmanager/shared": ["../../packages/shared/src/index.ts"],
+      "@taskmanager/shared/*": ["../../packages/shared/src/*"],
+      "@taskmanager/supabase": ["../../packages/supabase/src/client.ts"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
+}
