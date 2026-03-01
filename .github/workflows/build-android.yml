@@ -25,7 +25,7 @@ jobs:
         run: npm install --legacy-peer-deps
 
       - name: Install Expo dependencies
-        run: npx expo install --check
+        run: npx expo install
         working-directory: apps/mobile
 
       - name: Install Ruby
